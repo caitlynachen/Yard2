@@ -12,10 +12,12 @@ import FirebaseStorage
 import SDWebImage
 import MapKit
 
-class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate{
+class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, UISearchBarDelegate{
     
+    @IBOutlet weak var searchBar: UISearchBar!
     var storageRef: FIRStorageReference?
     
+    @IBOutlet weak var searchNavBar: UINavigationBar!
     var items: [ItemObject] = []
 
     @IBOutlet weak var tableView: UITableView!
@@ -25,6 +27,9 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     var queryswitch = 0
     var previousquery = 0
+    
+    var results : [ItemObject] = []
+
 
 //    var dict: [CLLocationDistance:ItemObject] = [:]
     override func viewDidAppear(_ animated: Bool) {
@@ -38,9 +43,32 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             queries()
         }
     }
+    @IBAction func searchButtonTapped(_ sender: Any) {
+        searchNavBar.isHidden = false
+        
+        searchBar.isHidden = false
 
+    }
+    @IBAction func cancelSearchButtonTapped(_ sender: Any) {
+        
+        searchNavBar.isHidden = true
+        
+        searchBar.isHidden = true
+        
+        searchBar.endEditing(true)
+        results = []
+        tableView.reloadData()
+        
+        
+    }
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        searchNavBar.isHidden = true
+        
+        searchBar.isHidden = true
         
         self.locationManager.requestAlwaysAuthorization()
         
@@ -58,7 +86,7 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         
         tableView.delegate = self
         tableView.dataSource = self
-        let ref = FIRDatabase.database().reference(withPath: "item-name")
+        searchBar.delegate = self
 
         queries()
         
@@ -152,13 +180,22 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        if results.count == 0{
+            return items.count
+
+        }
+        return results.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell:CustomTableViewCell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! CustomTableViewCell
-        let itemOb = items[indexPath.row]
         
+        let cell:CustomTableViewCell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! CustomTableViewCell
+        var itemOb : ItemObject = items[indexPath.row]
+        
+        if results.count != 0 {
+            itemOb = results[indexPath.row]
+        }
         
         DispatchQueue.global(qos: .background).async {
             let url = URL(string: itemOb.imageUrl)
@@ -179,6 +216,22 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         return cell
     }
 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText.isEmpty == false {
+            results = items.filter({(it: ItemObject) -> Bool in
+                return it.title.range(of: searchText, options: .caseInsensitive) != nil
+            })
+            
+        }
+        
+        if searchText == ""{
+            results = items
+        }
+        
+        tableView.reloadData()
+    }
+    
     var selectedItem : ItemObject?
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -207,7 +260,7 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             
             let dvc = segue.destination as! SortViewController
             dvc.index = queryswitch
-        }
+        } 
     }
  
     @IBAction func unwindToBuy(segue: UIStoryboardSegue){
