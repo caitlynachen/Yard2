@@ -21,7 +21,14 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     @IBOutlet weak var tableView: UITableView!
     
     let locationManager = CLLocationManager()
+    var estcurrentLoc : CLLocation?
 
+
+//    var dict: [CLLocationDistance:ItemObject] = [:]
+    override func viewDidAppear(_ animated: Bool) {
+        estcurrentLoc = currentLoc
+
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,8 +67,10 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 newItems.append(i.value)
             }
             self.items = newItems
+//            self.dict = dictionary
             self.tableView.reloadData()
         })
+        
 
         // Do any additional setup after loading the view.
     }
@@ -100,6 +109,8 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         cell.priceLabel.text = String(itemOb.price)
         cell.conditionLabel.text = itemOb.condition
         cell.addressLabel.text = itemOb.addressStr
+        let rounded = round(itemOb.calculateDistance(fromLocation: estcurrentLoc)/1609.344*100)/100
+        cell.distance.text = String(rounded) + "mi"
         
         return cell
     }
