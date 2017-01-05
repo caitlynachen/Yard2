@@ -23,7 +23,7 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     @IBOutlet weak var tableView: UITableView!
     
     let locationManager = CLLocationManager()
-    var estcurrentLoc : CLLocation?
+    var estcurrentLoc : CLLocation = CLLocation(latitude: 0, longitude: 0)
     
     var queryswitch = 0
     var previousquery = 0
@@ -95,6 +95,8 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         queries()
         
 
+        locationManager.startUpdatingLocation()
+        self.tableView.reloadData()
         // Do any additional setup after loading the view.
     }
     
@@ -175,7 +177,7 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
 
     }
     
-    var currentLoc : CLLocation?
+    var currentLoc : CLLocation = CLLocation(latitude: 0, longitude: 0)
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         let clloc = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)

@@ -29,6 +29,9 @@
                                     <navigationItem title="Title" id="Ggw-cA-wmH">
                                         <barButtonItem key="rightBarButtonItem" title="Logout" id="gFD-67-eG7">
                                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="logoutButtonTapped:" destination="kXA-xV-Vlp" id="BmZ-PZ-UCE"/>
+                                            </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
