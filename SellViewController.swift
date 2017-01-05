@@ -13,7 +13,7 @@ import GooglePlaces
 import GoogleMaps
 import FirebaseAuth
 
-class SellViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+class SellViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate{
     
     @IBOutlet weak var chooseLocLabel: UILabel!
     @IBOutlet weak var search: UISearchBar!
@@ -22,6 +22,12 @@ class SellViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var imagePicker = UIImagePickerController()
     
     var conStr: String?
+    
+    var placeholderLabel: UILabel!
+
+    
+    var conInt = 0
+    var conprevious = 0
     
     var place: GMSPlace?
     
@@ -47,6 +53,12 @@ class SellViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if conInt != conprevious{
+            conprevious = conInt
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePicker.delegate = self
@@ -56,6 +68,18 @@ class SellViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         view.addGestureRecognizer(tap)
         
         conditionTextField.isEnabled = false
+        
+        captionTextView.delegate = self
+        placeholderLabel = UILabel()
+        placeholderLabel.text = "Write a caption..."
+        placeholderLabel.sizeToFit()
+        captionTextView.addSubview(placeholderLabel)
+        
+        placeholderLabel.frame.origin = CGPoint(x: 5, y: (captionTextView.font?.pointSize )!/2 )
+        placeholderLabel.font = UIFont(name: placeholderLabel.font.fontName, size: 12)
+        placeholderLabel.textColor = UIColor(white: 0, alpha: 0.2)
+        placeholderLabel.isHidden = captionTextView.text.characters.count != 0
+
         
         // Do any additional setup after loading the view.
     }
@@ -101,6 +125,13 @@ class SellViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
     }
     
+    func textViewDidChange(_ textView: UITextView) {
+        if textView == captionTextView{
+            placeholderLabel.isHidden = captionTextView.text.characters.count != 0
+            
+        }
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : AnyObject])
     {
@@ -122,6 +153,20 @@ class SellViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "toConView"{
+            let dvc = segue.destination as! ConditionViewController
+            dvc.index = self.conInt
+            //
+            //            dvc.URLstr = newString
+            //            print(newString)
+            
+            
+            
+        }
+    }
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "unwindToManage"{
             

@@ -10,6 +10,7 @@ import UIKit
 
 class ConditionTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var chkButton: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var condition: UILabel!
     override func awakeFromNib() {

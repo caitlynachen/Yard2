@@ -16,6 +16,7 @@ class ConditionViewController: UIViewController, UITableViewDelegate, UITableVie
 
     @IBOutlet weak var tableView: UITableView!
     
+    var index: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,14 +44,21 @@ class ConditionViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.condition.text = conditionLabels[indexPath.row]
         cell.descriptionLabel.text = descriptionLabels[indexPath.row]
         
+        if indexPath.row == index{
+            cell.chkButton.isHidden = false
+        } else{
+            cell.chkButton.isHidden = true
+        }
+
+        
         return cell
     }
     
-    var selectedCon : String?
+    var selectedCon : Int?
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        selectedCon = conditionLabels[indexPath.row]
+        selectedCon = indexPath.row
         
         self.performSegue(withIdentifier: "unwindFromCon", sender: self)
     }
@@ -62,7 +70,10 @@ class ConditionViewController: UIViewController, UITableViewDelegate, UITableVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "unwindFromCon"{
             let dvc = segue.destination as! SellViewController
-            dvc.conStr = selectedCon
+            if selectedCon != nil{
+                dvc.conStr = conditionLabels[selectedCon!]
+                dvc.conInt = selectedCon!
+            }
         }
         
     }

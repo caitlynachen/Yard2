@@ -356,7 +356,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <connections>
                                     <action selector="conditionButtonTapped:" destination="mXy-27-YPK" eventType="touchUpInside" id="aFb-J4-r0B"/>
-                                    <segue destination="rB4-oT-Z7s" kind="presentation" id="mnW-sK-50U"/>
+                                    <segue destination="rB4-oT-Z7s" kind="presentation" identifier="toConView" id="mnW-sK-50U"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -463,15 +463,26 @@
                                                     <color key="textColor" red="0.65386718749999995" green="0.65386718749999995" blue="0.65386718749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R72-ki-tb4">
+                                                    <rect key="frame" x="305" y="8" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="AAo-o1-Xya"/>
+                                                        <constraint firstAttribute="width" constant="20" id="qNO-bg-IMV"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button" image="check"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="yfQ-Mf-Pru" firstAttribute="top" secondItem="o8T-Jh-Eak" secondAttribute="topMargin" id="6qe-sP-20E"/>
                                                 <constraint firstItem="vPC-hv-jeC" firstAttribute="leading" secondItem="o8T-Jh-Eak" secondAttribute="leadingMargin" constant="10" id="AeT-jr-2W5"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="R72-ki-tb4" secondAttribute="trailing" constant="10" id="MJm-Y5-Htp"/>
                                                 <constraint firstItem="vPC-hv-jeC" firstAttribute="top" secondItem="yfQ-Mf-Pru" secondAttribute="bottom" constant="5" id="SaD-ig-OIm"/>
+                                                <constraint firstItem="R72-ki-tb4" firstAttribute="top" secondItem="o8T-Jh-Eak" secondAttribute="topMargin" id="b5j-fU-k3h"/>
                                                 <constraint firstItem="yfQ-Mf-Pru" firstAttribute="leading" secondItem="o8T-Jh-Eak" secondAttribute="leadingMargin" constant="10" id="rOv-tX-Nn9"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="chkButton" destination="R72-ki-tb4" id="Afg-sW-uda"/>
                                             <outlet property="condition" destination="yfQ-Mf-Pru" id="5qX-jb-vEL"/>
                                             <outlet property="descriptionLabel" destination="vPC-hv-jeC" id="EbN-zH-wDn"/>
                                         </connections>
