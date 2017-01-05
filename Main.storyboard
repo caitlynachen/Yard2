@@ -42,7 +42,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="144" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7qT-Bz-VXK">
-                                <rect key="frame" x="0.0" y="84" width="375" height="534"/>
+                                <rect key="frame" x="0.0" y="74" width="375" height="544"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ItemCell" rowHeight="144" id="njF-DL-XzP" customClass="CustomTableViewCell" customModule="Yard2" customModuleProvider="target">
@@ -143,7 +143,7 @@
                                 </items>
                             </navigationBar>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="usR-2l-Mn8">
-                                <rect key="frame" x="0.0" y="60" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="65" width="375" height="44"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pZQ-mK-Ydn">
@@ -167,8 +167,8 @@
                             <constraint firstItem="pZQ-mK-Ydn" firstAttribute="top" secondItem="9vw-le-ORd" secondAttribute="bottom" id="cZJ-8B-Qfb"/>
                             <constraint firstAttribute="trailing" secondItem="pZQ-mK-Ydn" secondAttribute="trailing" id="ct8-85-WMz"/>
                             <constraint firstAttribute="trailing" secondItem="7qT-Bz-VXK" secondAttribute="trailing" id="dDj-EJ-kg5"/>
-                            <constraint firstItem="usR-2l-Mn8" firstAttribute="top" secondItem="7kh-v9-S2i" secondAttribute="top" constant="60" id="e8j-oT-NtC"/>
-                            <constraint firstItem="7qT-Bz-VXK" firstAttribute="top" secondItem="ycJ-1h-15D" secondAttribute="bottom" constant="20" id="hFa-oB-I3X"/>
+                            <constraint firstItem="usR-2l-Mn8" firstAttribute="top" secondItem="7kh-v9-S2i" secondAttribute="top" constant="65" id="e8j-oT-NtC"/>
+                            <constraint firstItem="7qT-Bz-VXK" firstAttribute="top" secondItem="ycJ-1h-15D" secondAttribute="bottom" constant="10" id="hFa-oB-I3X"/>
                             <constraint firstItem="pZQ-mK-Ydn" firstAttribute="leading" secondItem="7kh-v9-S2i" secondAttribute="leading" id="oPu-7F-g8A"/>
                             <constraint firstItem="7qT-Bz-VXK" firstAttribute="leading" secondItem="7kh-v9-S2i" secondAttribute="leading" id="q3Y-xK-ynr"/>
                             <constraint firstItem="ycJ-1h-15D" firstAttribute="top" secondItem="9vw-le-ORd" secondAttribute="bottom" id="sdI-6l-hEv"/>
@@ -181,6 +181,7 @@
                         <outlet property="searchBar" destination="usR-2l-Mn8" id="cRX-oT-AlD"/>
                         <outlet property="searchNavBar" destination="pZQ-mK-Ydn" id="31A-da-nq2"/>
                         <outlet property="tableView" destination="7qT-Bz-VXK" id="4bl-Wt-kja"/>
+                        <outlet property="uppertableViewConstraint" destination="hFa-oB-I3X" id="O96-4C-sLo"/>
                         <segue destination="75p-Cr-3L5" kind="presentation" identifier="toBuyItem" id="9zX-kL-n8y"/>
                     </connections>
                 </viewController>

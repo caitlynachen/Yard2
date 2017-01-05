@@ -43,8 +43,10 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             queries()
         }
     }
+    @IBOutlet weak var uppertableViewConstraint: NSLayoutConstraint!
     @IBAction func searchButtonTapped(_ sender: Any) {
         searchNavBar.isHidden = false
+        uppertableViewConstraint.constant = uppertableViewConstraint.constant + 30
         
         searchBar.isHidden = false
 
@@ -54,6 +56,8 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         searchNavBar.isHidden = true
         
         searchBar.isHidden = true
+        uppertableViewConstraint.constant = uppertableViewConstraint.constant - 30
+
         
         searchBar.endEditing(true)
         results = []
