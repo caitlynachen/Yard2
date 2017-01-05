@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import SDWebImage
 
 class BuyItemViewController: UIViewController {
     
@@ -37,14 +38,19 @@ class BuyItemViewController: UIViewController {
         price.text = priceString
         
         
-        
-        
-        let url = URL(string: (item?.imageUrl)!)
-        
-        let data = NSData(contentsOf: url!)
-        if data != nil{
-            imageView.image = UIImage(data: data as! Data)
+        DispatchQueue.global(qos: .background).async {
+            let url = URL(string: (self.item?.imageUrl)!)
+            self.imageView.sd_setImage(with: url)
+            
+            
         }
+        
+//        let url = URL(string: (item?.imageUrl)!)
+//        
+//        let data = NSData(contentsOf: url!)
+//        if data != nil{
+//            imageView.image = UIImage(data: data as! Data)
+//        }
         
         // Do any additional setup after loading the view.
     }

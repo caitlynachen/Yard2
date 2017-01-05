@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseStorage
+import SDWebImage
 
 class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -50,12 +51,19 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         let cell:CustomTableViewCell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! CustomTableViewCell
         let itemOb = items[indexPath.row]
         
-        let url = URL(string: itemOb.imageUrl)
         
-        let data = NSData(contentsOf: url!)
-        if data != nil{
-            cell.imgView.image = UIImage(data: data as! Data)
+        DispatchQueue.global(qos: .background).async {
+            let url = URL(string: itemOb.imageUrl)
+            cell.imgView.sd_setImage(with: url)
+
+            DispatchQueue.main.async {
+                tableView.reloadData()
+            }
         }
+        //let data = NSData(contentsOf: url!)
+        //if data != nil{
+        //    cell.imgView.image = UIImage(data: data as! Data)
+        //}
 
         cell.titleLabel.text = itemOb.title
         cell.priceLabel.text = String(itemOb.price)

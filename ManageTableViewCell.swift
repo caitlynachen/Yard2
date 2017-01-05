@@ -14,7 +14,7 @@ class ManageTableViewCell: UITableViewCell {
    
     @IBOutlet weak var titleLabel: UILabel!
 
-    @IBOutlet weak var soldButton: UIButton!
+//    @IBOutlet weak var soldButton: UIButton!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var conditionLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!

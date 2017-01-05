@@ -53,19 +53,26 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
         let cell:ManageTableViewCell = tableView.dequeueReusableCell(withIdentifier: "manCell", for: indexPath) as! ManageTableViewCell
         let itemOb = items[indexPath.row]
         
-        let url = URL(string: itemOb.imageUrl)
-        
-        let data = NSData(contentsOf: url!)
-        if data != nil{
-            cell.imgView.image = UIImage(data: data as! Data)
+//        let url = URL(string: itemOb.imageUrl)
+        DispatchQueue.global(qos: .background).async {
+            let url = URL(string: itemOb.imageUrl)
+            cell.imgView.sd_setImage(with: url)
+            
+            DispatchQueue.main.async {
+                tableView.reloadData()
+            }
         }
+//        let data = NSData(contentsOf: url!)
+//        if data != nil{
+//            cell.imgView.image = UIImage(data: data as! Data)
+//        }
         itemRow = indexPath.row
         
         cell.titleLabel.text = itemOb.title
         cell.priceLabel.text = String(itemOb.price)
         cell.conditionLabel.text = itemOb.condition
         cell.addressLabel.text = itemOb.addressStr
-        cell.soldButton.addTarget(self, action: #selector(self.soldButtonClicked), for: .touchUpInside)
+//        cell.soldButton.addTarget(self, action: #selector(self.soldButtonClicked), for: .touchUpInside)
         
         
         return cell
@@ -101,35 +108,45 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
         }
     }
     
-    func soldButtonClicked(_ sender: Any) {
+//    func soldButtonClicked(_ sender: Any) {
+//        
+//        let actionSheetController: UIAlertController = UIAlertController()
+//        
+//        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
+//        }
+//        actionSheetController.addAction(cancelAction)
+//        let takePictureAction: UIAlertAction = UIAlertAction(title: "Sell", style: .default) { action -> Void in
+//            let deleteAlert: UIAlertController = UIAlertController(title: "Confirm Sale.", message: "Sell?", preferredStyle: .alert)
+//            
+//            let dontDeleteAction: UIAlertAction = UIAlertAction(title: "Don't Sell", style: .cancel) { action -> Void in
+//            }
+//            deleteAlert.addAction(dontDeleteAction)
+//            let deleteAction: UIAlertAction = UIAlertAction(title: "Sell", style: .default) { action -> Void in
+//                
+//                let itemOb = self.items[self.itemRow!]
+//                itemOb.ref?.removeValue()
+//            }
+//            deleteAlert.addAction(deleteAction)
+//            
+//            
+//            self.present(deleteAlert, animated: true, completion: nil)
+//        }
+//        actionSheetController.addAction(takePictureAction)
+//        self.present(actionSheetController, animated: true, completion: nil)
+//        
+//       
+//        
+//    }
+
+    var selectedItem : ItemObject?
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let actionSheetController: UIAlertController = UIAlertController()
+        selectedItem = items[indexPath.row]
         
-        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
-        }
-        actionSheetController.addAction(cancelAction)
-        let takePictureAction: UIAlertAction = UIAlertAction(title: "Sell", style: .default) { action -> Void in
-            let deleteAlert: UIAlertController = UIAlertController(title: "Confirm Sale.", message: "Sell?", preferredStyle: .alert)
-            
-            let dontDeleteAction: UIAlertAction = UIAlertAction(title: "Don't Sell", style: .cancel) { action -> Void in
-            }
-            deleteAlert.addAction(dontDeleteAction)
-            let deleteAction: UIAlertAction = UIAlertAction(title: "Sell", style: .default) { action -> Void in
-                
-                let itemOb = self.items[self.itemRow!]
-                itemOb.ref?.removeValue()
-            }
-            deleteAlert.addAction(deleteAction)
-            
-            
-            self.present(deleteAlert, animated: true, completion: nil)
-        }
-        actionSheetController.addAction(takePictureAction)
-        self.present(actionSheetController, animated: true, completion: nil)
-        
-       
+        self.performSegue(withIdentifier: "toManItem", sender: nil)
         
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -141,14 +158,27 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
     @IBAction func unwindToManage(segue: UIStoryboardSegue){
         
     }
-    /*
+    
+    @IBAction func unwindToManSales(segue: UIStoryboardSegue){
+        
+    }
+    
+    @IBAction func unwindToManSold(segue: UIStoryboardSegue){
+        
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toManItem"{
+            let dvc = segue.destination as! ManageItemViewController
+            dvc.item = self.selectedItem
+            
+        }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+
 
 }
