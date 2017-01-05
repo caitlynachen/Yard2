@@ -612,18 +612,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZII-F2-CKf">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                                <items>
-                                    <navigationItem title="Manage Sales" id="s4H-fb-69J">
-                                        <barButtonItem key="rightBarButtonItem" title="New Item" id="UAG-dm-8dc">
-                                            <connections>
-                                                <segue destination="mXy-27-YPK" kind="presentation" id="4T3-6i-oIJ"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GMR-w1-QcY">
                                 <rect key="frame" x="0.0" y="84" width="375" height="534"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -707,22 +695,63 @@
                                     <outlet property="delegate" destination="qdX-l6-Eqv" id="arF-gN-97W"/>
                                 </connections>
                             </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="fqn-Ie-Bbg">
+                                <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZII-F2-CKf">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <items>
+                                    <navigationItem title="Manage Sales" id="s4H-fb-69J">
+                                        <barButtonItem key="leftBarButtonItem" title="New Item" id="UAG-dm-8dc">
+                                            <connections>
+                                                <segue destination="mXy-27-YPK" kind="presentation" id="4T3-6i-oIJ"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="xoU-He-KAd">
+                                            <connections>
+                                                <action selector="searchTapped:" destination="qdX-l6-Eqv" id="PCu-tW-1kX"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="glz-4f-gdV">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <items>
+                                    <navigationItem title="Search" id="rJs-Yt-dd9">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Hxn-dM-sLe">
+                                            <connections>
+                                                <action selector="cancelSearch:" destination="qdX-l6-Eqv" id="nOn-Fu-cOe"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="fqn-Ie-Bbg" secondAttribute="trailing" id="3vG-sW-GsR"/>
                             <constraint firstItem="ZII-F2-CKf" firstAttribute="top" secondItem="xVA-Yk-woE" secondAttribute="bottom" id="69B-bo-Diw"/>
+                            <constraint firstItem="glz-4f-gdV" firstAttribute="top" secondItem="xVA-Yk-woE" secondAttribute="bottom" id="8aR-Ot-pya"/>
+                            <constraint firstItem="glz-4f-gdV" firstAttribute="leading" secondItem="vDf-ah-NIm" secondAttribute="leading" id="9pr-1I-fXL"/>
+                            <constraint firstItem="fqn-Ie-Bbg" firstAttribute="leading" secondItem="vDf-ah-NIm" secondAttribute="leading" id="DsF-hb-TmM"/>
                             <constraint firstItem="GMR-w1-QcY" firstAttribute="trailing" secondItem="vDf-ah-NIm" secondAttribute="trailingMargin" constant="16" id="T8Q-Fu-EcM"/>
+                            <constraint firstItem="fqn-Ie-Bbg" firstAttribute="top" secondItem="glz-4f-gdV" secondAttribute="bottom" id="Xif-Vf-5ah"/>
                             <constraint firstItem="ZII-F2-CKf" firstAttribute="leading" secondItem="vDf-ah-NIm" secondAttribute="leading" id="dcN-PL-vYN"/>
                             <constraint firstItem="GMR-w1-QcY" firstAttribute="top" secondItem="ZII-F2-CKf" secondAttribute="bottom" constant="20" id="fZh-ey-jvb"/>
-                            <constraint firstItem="GMR-w1-QcY" firstAttribute="top" secondItem="ZII-F2-CKf" secondAttribute="bottom" constant="20" id="lQX-vp-sVY"/>
                             <constraint firstItem="GMR-w1-QcY" firstAttribute="leading" secondItem="vDf-ah-NIm" secondAttribute="leadingMargin" constant="-16" id="nkW-BM-xdS"/>
                             <constraint firstItem="NeP-rC-IKY" firstAttribute="top" secondItem="GMR-w1-QcY" secondAttribute="bottom" id="o9Z-Fl-cVQ"/>
                             <constraint firstAttribute="trailing" secondItem="ZII-F2-CKf" secondAttribute="trailing" id="qhJ-XN-J3n"/>
+                            <constraint firstAttribute="trailing" secondItem="glz-4f-gdV" secondAttribute="trailing" id="zPm-p8-OVX"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Manage Sales" id="rD2-Uu-GyB"/>
                     <connections>
+                        <outlet property="searchBar" destination="fqn-Ie-Bbg" id="e1C-r5-srA"/>
+                        <outlet property="searchNavBar" destination="glz-4f-gdV" id="GLD-2z-kGh"/>
                         <outlet property="tableView" destination="GMR-w1-QcY" id="vyu-4p-9af"/>
+                        <outlet property="uppertableViewConstraint" destination="fZh-ey-jvb" id="1NP-Dd-Uu6"/>
                         <segue destination="IRb-q5-gDV" kind="presentation" identifier="toManItem" id="7Un-G3-8k2"/>
                     </connections>
                 </viewController>

@@ -11,17 +11,43 @@ import Firebase
 import FirebaseAuth
 import MapKit
 
-class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
+class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, UISearchBarDelegate {
     
+    @IBOutlet weak var searchBar: UISearchBar!
     var items: [ItemObject] = []
     let ref = FIRDatabase.database().reference(withPath: "item-name")
 
     let locationManager = CLLocationManager()
     var estcurrentLoc : CLLocation?
+    var results : [ItemObject] = []
+
     
+    @IBOutlet weak var uppertableViewConstraint: NSLayoutConstraint!
+
+    @IBAction func searchTapped(_ sender: Any) {
+        searchNavBar.isHidden = false
+        uppertableViewConstraint.constant = uppertableViewConstraint.constant + 30
+        
+        searchBar.isHidden = false
+
+    }
+ 
+    @IBAction func cancelSearch(_ sender: Any) {
+        searchNavBar.isHidden = true
+        
+        searchBar.isHidden = true
+        uppertableViewConstraint.constant = uppertableViewConstraint.constant - 30
+        
+        
+        searchBar.endEditing(true)
+        results = []
+        tableView.reloadData()
+
+    }
 
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var searchNavBar: UINavigationBar!
     override func viewDidAppear(_ animated: Bool) {
         estcurrentLoc = currentLoc
         
@@ -30,6 +56,10 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        searchNavBar.isHidden = true
+        
+        searchBar.isHidden = true
+        
         self.tableView.rowHeight = 144
         
         self.locationManager.requestAlwaysAuthorization()
@@ -68,7 +98,7 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
         
         tableView.delegate = self
         tableView.dataSource = self
-        
+        searchBar.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -82,15 +112,20 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
-    }
+        if results.count == 0{
+            return items.count
+            
+        }
+        return results.count    }
     
     var itemRow: Int?
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:ManageTableViewCell = tableView.dequeueReusableCell(withIdentifier: "manCell", for: indexPath) as! ManageTableViewCell
-        let itemOb = items[indexPath.row]
+        var itemOb = items[indexPath.row]
+        if results.count != 0 {
+            itemOb = results[indexPath.row]
+        }
         
-//        let url = URL(string: itemOb.imageUrl)
         DispatchQueue.global(qos: .background).async {
             let url = URL(string: itemOb.imageUrl)
             cell.imgView.sd_setImage(with: url)
@@ -99,10 +134,7 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
                 tableView.reloadData()
             }
         }
-//        let data = NSData(contentsOf: url!)
-//        if data != nil{
-//            cell.imgView.image = UIImage(data: data as! Data)
-//        }
+
         itemRow = indexPath.row
         
         cell.titleLabel.text = itemOb.title
@@ -111,12 +143,26 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
         cell.addressLabel.text = itemOb.addressStr
         let rounded = round(itemOb.calculateDistance(fromLocation: currentLoc)/1609.344*100)/100
         cell.distance.text = String(rounded) + "mi"
-//        cell.soldButton.addTarget(self, action: #selector(self.soldButtonClicked), for: .touchUpInside)
         
         
         return cell
     }
-    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText.isEmpty == false {
+            results = items.filter({(it: ItemObject) -> Bool in
+                return it.title.range(of: searchText, options: .caseInsensitive) != nil
+            })
+            
+        }
+        
+        if searchText == ""{
+            results = items
+        }
+        
+        tableView.reloadData()
+    }
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
