@@ -10,17 +10,33 @@ import UIKit
 import Firebase
 import FirebaseStorage
 import SDWebImage
+import MapKit
 
-class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate{
     
     var storageRef: FIRStorageReference?
     
     var items: [ItemObject] = []
 
     @IBOutlet weak var tableView: UITableView!
+    
+    let locationManager = CLLocationManager()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+
         
         storageRef = FIRStorage.storage().reference(forURL: "gs://yardsale-cd99c.appspot.com")
         
@@ -31,16 +47,31 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         ref.observe(.value, with: { snapshot in
             var newItems: [ItemObject] = []
             
+            var dictionary: [CLLocationDistance:ItemObject] = [:]
+
             for item in snapshot.children {
                 let itemOb = ItemObject(snapshot: item as! FIRDataSnapshot)
-                newItems.append(itemOb)
+                dictionary.updateValue(itemOb, forKey: itemOb.calculateDistance(fromLocation: self.currentLoc))
             }
-            
+
+
+            let sorteddict = dictionary.sorted(by: { $0.key < $1.key })
+            for i in sorteddict {
+                newItems.append(i.value)
+            }
             self.items = newItems
             self.tableView.reloadData()
         })
 
         // Do any additional setup after loading the view.
+    }
+    
+    var currentLoc : CLLocation?
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        let clloc = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
+        currentLoc = clloc
+//        print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Foundation
+import MapKit
 
 struct ItemObject {
     
@@ -25,8 +26,9 @@ struct ItemObject {
     let longCoor: Double
     let addedByUser: String
     
-    
     let ref: FIRDatabaseReference?
+    
+//    var distance: CLLocationDistance?
 
 
     init (title: String, price: Double, condition: String, caption: String, key: String = "", imageUrl: String, createdAt: String, addressStr: String, latCoor: Double, longCoor: Double, addedByUser: String){
@@ -79,6 +81,12 @@ struct ItemObject {
             "longCoor": longCoor,
             "addedByUser" : addedByUser
         ]
+    }
+    
+    func calculateDistance(fromLocation: CLLocation?) -> CLLocationDistance{
+        let location = CLLocation(latitude: self.latCoor, longitude: self.longCoor)
+        let distance = location.distance(from: fromLocation!)
+        return distance
     }
 
 
