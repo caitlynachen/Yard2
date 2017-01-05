@@ -9,6 +9,8 @@
 import UIKit
 import SDWebImage
 import MapKit
+import FirebaseStorage
+import Firebase
 
 class ManageItemViewController: UIViewController {
     
@@ -93,6 +95,34 @@ class ManageItemViewController: UIViewController {
                 self.performSegue(withIdentifier: "unwindToManSold", sender: self)
                 
                 let itemOb = self.item
+                let storage = FIRStorage.storage()
+                
+                let storageRef = storage.reference(forURL: "gs://yardsale-cd99c.appspot.com")
+                
+                
+                let ref = FIRDatabase.database().reference(withPath: "previous-posts")
+                let itemRef = ref.child((self.navBAr.topItem?.title)!)
+                
+                let imageData: NSData = UIImagePNGRepresentation((self.imgView?.image)!)! as NSData
+                
+                let imageRef = storageRef.child((self.navBAr.topItem?.title)!)
+                
+                let uploadTask = imageRef.put(imageData as Data, metadata: nil) { metadata, error in
+                    if error != nil {
+                    } else {
+                        // Metadata contains file metadata such as size, content-type, and download URL.
+                        let downloadURL = metadata!.downloadURL()
+                        
+                        let price = round(Double(self.price.text!)!*100)/100
+                        let items = ItemObject(title: (self.navBAr.topItem?.title!)!, price: Double(price), condition: self.conditionLabel.text!, caption: self.caption.text!, imageUrl: String(describing: downloadURL!), createdAt: String(describing: NSDate()), addressStr: (self.addressLabel.titleLabel?.text!)!, latCoor: 0, longCoor: 0, addedByUser: (FIRAuth.auth()?.currentUser?.email)!)
+                        itemRef.setValue(items.toAnyObject())
+                        
+                        
+                    }
+
+                }
+                
+                
                 itemOb?.ref?.removeValue()
             }
             deleteAlert.addAction(deleteAction)

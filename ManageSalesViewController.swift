@@ -28,12 +28,9 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
     }
     
     override func viewDidLoad() {
-        self.tableView.rowHeight = 144
-
-        
-        tableView.delegate = self
-        tableView.dataSource = self
         super.viewDidLoad()
+
+        self.tableView.rowHeight = 144
         
         self.locationManager.requestAlwaysAuthorization()
         
@@ -46,18 +43,31 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
             locationManager.startUpdatingLocation()
         }
         
-        let query = ref.queryOrdered(byChild: "addedByUser").queryEqual(toValue: FIRAuth.auth()?.currentUser?.email!)
-        query.observe(.value, with: { snapshot in
+        ref.observe(.value, with: { snapshot in
             var newItems: [ItemObject] = []
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat =  "yyyy-MM-dd HH:mm:ss Z"
+            
+            
+            var dictionary: [Date:ItemObject] = [:]
             
             for item in snapshot.children {
                 let itemOb = ItemObject(snapshot: item as! FIRDataSnapshot)
-                newItems.append(itemOb)
+                dictionary.updateValue(itemOb, forKey: dateFormatter.date(from: itemOb.createdAt)!)
             }
             
+            
+            let sorteddict = dictionary.sorted(by: { $0.key < $1.key })
+            for i in sorteddict {
+                newItems.append(i.value)
+            }
             self.items = newItems
             self.tableView.reloadData()
         })
+        
+        
+        tableView.delegate = self
+        tableView.dataSource = self
         
 
         // Do any additional setup after loading the view.
@@ -68,7 +78,6 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         let clloc = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
         currentLoc = clloc
-        //        print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
 
 
@@ -100,7 +109,7 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
         cell.priceLabel.text = String(itemOb.price)
         cell.conditionLabel.text = itemOb.condition
         cell.addressLabel.text = itemOb.addressStr
-        let rounded = round(itemOb.calculateDistance(fromLocation: estcurrentLoc)/1609.344*100)/100
+        let rounded = round(itemOb.calculateDistance(fromLocation: currentLoc)/1609.344*100)/100
         cell.distance.text = String(rounded) + "mi"
 //        cell.soldButton.addTarget(self, action: #selector(self.soldButtonClicked), for: .touchUpInside)
         
