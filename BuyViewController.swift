@@ -22,12 +22,21 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     let locationManager = CLLocationManager()
     var estcurrentLoc : CLLocation?
-
+    
+    var queryswitch = 0
+    var previousquery = 0
 
 //    var dict: [CLLocationDistance:ItemObject] = [:]
     override func viewDidAppear(_ animated: Bool) {
         estcurrentLoc = currentLoc
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if queryswitch != previousquery{
+            queryswitch = previousquery
+            queries()
+        }
     }
 
     override func viewDidLoad() {
@@ -51,28 +60,87 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         tableView.dataSource = self
         let ref = FIRDatabase.database().reference(withPath: "item-name")
 
-        ref.observe(.value, with: { snapshot in
-            var newItems: [ItemObject] = []
-            
-            var dictionary: [CLLocationDistance:ItemObject] = [:]
-
-            for item in snapshot.children {
-                let itemOb = ItemObject(snapshot: item as! FIRDataSnapshot)
-                dictionary.updateValue(itemOb, forKey: itemOb.calculateDistance(fromLocation: self.currentLoc))
-            }
-
-
-            let sorteddict = dictionary.sorted(by: { $0.key < $1.key })
-            for i in sorteddict {
-                newItems.append(i.value)
-            }
-            self.items = newItems
-//            self.dict = dictionary
-            self.tableView.reloadData()
-        })
+        queries()
         
 
         // Do any additional setup after loading the view.
+    }
+    
+    func queries() {
+        let ref = FIRDatabase.database().reference(withPath: "item-name")
+
+        switch queryswitch{
+        case 0:
+            ref.observe(.value, with: { snapshot in
+                var newItems: [ItemObject] = []
+                
+                var dictionary: [CLLocationDistance:ItemObject] = [:]
+                
+                for item in snapshot.children {
+                    let itemOb = ItemObject(snapshot: item as! FIRDataSnapshot)
+                    dictionary.updateValue(itemOb, forKey: itemOb.calculateDistance(fromLocation: self.currentLoc))
+                }
+                
+                
+                let sorteddict = dictionary.sorted(by: { $0.key < $1.key })
+                for i in sorteddict {
+                    newItems.append(i.value)
+                }
+                self.items = newItems
+                self.tableView.reloadData()
+            })
+        case 1:
+            ref.observe(.value, with: { snapshot in
+                var newItems: [ItemObject] = []
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat =  "yyyy-MM-dd HH:mm:ss Z"
+                
+                
+                var dictionary: [Date:ItemObject] = [:]
+                
+                for item in snapshot.children {
+                    let itemOb = ItemObject(snapshot: item as! FIRDataSnapshot)
+                    dictionary.updateValue(itemOb, forKey: dateFormatter.date(from: itemOb.createdAt)!)
+                }
+                
+                
+                let sorteddict = dictionary.sorted(by: { $0.key < $1.key })
+                for i in sorteddict {
+                    newItems.append(i.value)
+                }
+                self.items = newItems
+                self.tableView.reloadData()
+            })
+            
+        case 2:
+            ref.observe(.value, with: { snapshot in
+                var newItems: [ItemObject] = []
+                
+                
+                var dictionary: [Double:ItemObject] = [:]
+                
+                for item in snapshot.children {
+                    let itemOb = ItemObject(snapshot: item as! FIRDataSnapshot)
+                    dictionary.updateValue(itemOb, forKey: itemOb.price)
+                }
+                
+                
+                let sorteddict = dictionary.sorted(by: { $0.key < $1.key })
+                for i in sorteddict {
+                    newItems.append(i.value)
+                }
+                self.items = newItems
+                self.tableView.reloadData()
+            })
+
+            
+        default:
+            print("yikes")
+            
+            
+            
+        }
+
     }
     
     var currentLoc : CLLocation?
@@ -100,10 +168,6 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 tableView.reloadData()
             }
         }
-        //let data = NSData(contentsOf: url!)
-        //if data != nil{
-        //    cell.imgView.image = UIImage(data: data as! Data)
-        //}
 
         cell.titleLabel.text = itemOb.title
         cell.priceLabel.text = String(itemOb.price)
@@ -124,6 +188,10 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         
     }
 
+    @IBAction func sortByTapped(_ sender: Any) {
+        
+        
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -135,10 +203,18 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let dvc = segue.destination as! BuyItemViewController
             dvc.item = self.selectedItem
 
+        } else if segue.identifier == "toSort"{
+            
+            let dvc = segue.destination as! SortViewController
+            dvc.index = queryswitch
         }
     }
  
     @IBAction func unwindToBuy(segue: UIStoryboardSegue){
+        
+    }
+    
+    @IBAction func unwindToBuyFromSort(segue: UIStoryboardSegue){
         
     }
     

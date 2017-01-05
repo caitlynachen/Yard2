@@ -36,6 +36,8 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>location use</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>always use</string>
 	<key>NSCameraUsageDescription</key>
 	<string>camera use</string>
 	<key>NSPhotoLibraryUsageDescription</key>
