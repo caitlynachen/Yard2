@@ -86,7 +86,7 @@
                             <constraint firstItem="BjW-iA-Tuz" firstAttribute="top" secondItem="pUN-Xw-gcG" secondAttribute="bottom" constant="113" id="vTC-d5-k7A"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="vb3-s2-PFw"/>
+                    <tabBarItem key="tabBarItem" title="profile" image="profile" id="vb3-s2-PFw"/>
                     <connections>
                         <outlet property="imgView" destination="BjW-iA-Tuz" id="1DN-Gk-MeB"/>
                         <outlet property="moneyRaised" destination="yOr-qA-PJI" id="b2X-fo-wQa"/>
@@ -244,7 +244,7 @@
                             <constraint firstItem="ycJ-1h-15D" firstAttribute="leading" secondItem="7kh-v9-S2i" secondAttribute="leading" id="xJ9-tg-VhQ"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Buy" id="yv4-xo-MCu"/>
+                    <tabBarItem key="tabBarItem" title="Buy" image="buy" id="yv4-xo-MCu"/>
                     <connections>
                         <outlet property="searchBar" destination="usR-2l-Mn8" id="cRX-oT-AlD"/>
                         <outlet property="searchNavBar" destination="pZQ-mK-Ydn" id="31A-da-nq2"/>
@@ -814,7 +814,7 @@
                             <constraint firstAttribute="trailing" secondItem="glz-4f-gdV" secondAttribute="trailing" id="zPm-p8-OVX"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Manage Sales" id="rD2-Uu-GyB"/>
+                    <tabBarItem key="tabBarItem" title="Manage Sales" image="managesales" id="rD2-Uu-GyB"/>
                     <connections>
                         <outlet property="searchBar" destination="fqn-Ie-Bbg" id="e1C-r5-srA"/>
                         <outlet property="searchNavBar" destination="glz-4f-gdV" id="GLD-2z-kGh"/>
@@ -1408,8 +1408,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="buy" width="25" height="25"/>
         <image name="camera" width="45" height="32"/>
         <image name="check" width="366" height="360"/>
+        <image name="managesales" width="25" height="25"/>
+        <image name="profile" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="mU7-wA-nOA"/>

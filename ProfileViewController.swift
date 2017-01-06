@@ -12,14 +12,14 @@ import Firebase
 import FirebaseStorage
 
 class ProfileViewController: UIViewController {
-
+    
     @IBOutlet weak var moneyRaised: UILabel!
     @IBOutlet weak var navBar: UINavigationBar!
     @IBOutlet weak var imgView: UIImageView!
     
     var itemprices: [Double] = []
     override func viewDidLoad() {
-
+        
         super.viewDidLoad()
         
         navBar.topItem?.title = FIRAuth.auth()?.currentUser?.email
@@ -30,9 +30,9 @@ class ProfileViewController: UIViewController {
         
         ref.observe(.value, with: { snapshot in
             var newItems: [Double] = []
-
+            
             var sum = 0.0
-
+            
             for item in snapshot.children {
                 let itemOb = ItemObject(snapshot: item as! FIRDataSnapshot)
                 
@@ -44,25 +44,42 @@ class ProfileViewController: UIViewController {
             for i in newItems {
                 sum = sum + i
             }
-
+            
             self.moneyRaised.text = String(sum)
-
+            
         })
         
-
         
         
-
+        
+        
         // Do any additional setup after loading the view.
     }
-
+    
+    
     @IBAction func logoutButtonTapped(_ sender: Any) {
         
-        try! FIRAuth.auth()!.signOut()
-        self.dismiss(animated: true, completion: nil)
-        let newvc: UIViewController = LoginViewController() as UIViewController
-        self.present(newvc, animated: true, completion: nil)
-
+        let actionSheetController: UIAlertController = UIAlertController(title: "Logout", message: "Would you like to logout?", preferredStyle: .alert)
+        
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
+        }
+        actionSheetController.addAction(cancelAction)
+        let takePictureAction: UIAlertAction = UIAlertAction(title: "Logout", style: .default) { action -> Void in
+            
+            
+            try! FIRAuth.auth()!.signOut()
+            self.dismiss(animated: true, completion: nil)
+            let newvc: UIViewController = LoginViewController() as UIViewController
+            self.present(newvc, animated: true, completion: nil)
+            
+            
+        }
+        actionSheetController.addAction(takePictureAction)
+        self.present(actionSheetController, animated: true, completion: nil)
+        
+        
+        
+        
         
     }
     override func didReceiveMemoryWarning() {
@@ -73,15 +90,15 @@ class ProfileViewController: UIViewController {
     @IBAction func unwindToProfile(segue: UIStoryboardSegue){
         
     }
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
