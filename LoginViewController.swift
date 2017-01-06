@@ -95,8 +95,6 @@ class LoginViewController: UIViewController {
         
         } else if identifier == "loginToTab"{
             
-            var shouldPerformSegue = false
-
             
             if self.emailTextField.text == "" || self.passwordTextField.text == ""
             {

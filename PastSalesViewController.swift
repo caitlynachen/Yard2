@@ -181,7 +181,7 @@ class PastSalesViewController: UIViewController, UITableViewDelegate, UITableVie
         
         selectedItem = items[indexPath.row]
         
-//        self.performSegue(withIdentifier: "toBuyItem", sender: nil)
+        self.performSegue(withIdentifier: "toPastItem", sender: nil)
         
     }
     
@@ -190,13 +190,18 @@ class PastSalesViewController: UIViewController, UITableViewDelegate, UITableVie
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func unwindToPastItem(segue: UIStoryboardSegue){
+        
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "toBuyItem"{
-//            let dvc = segue.destination as! BuyItemViewController
-//            dvc.item = self.selectedItem
-//            
-//        } else if segue.identifier == "toSort"{
-//            
+        if segue.identifier == "toPastItem"{
+            let dvc = segue.destination as! PastItemViewController
+            dvc.item = self.selectedItem
+            
+        }
+//        else if segue.identifier == "toSort"{
+//
 //            let dvc = segue.destination as! SortViewController
 //            dvc.index = queryswitch
 //        }

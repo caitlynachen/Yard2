@@ -135,6 +135,12 @@ class ManageItemViewController: UIViewController {
         
 
     }
+    
+    
+    @IBAction func unwindToManageItem(segue: UIStoryboardSegue){
+        
+    }
+    
 
     
     // MARK: - Navigation
@@ -144,7 +150,7 @@ class ManageItemViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "toCommView"{
-            let dvc = segue.destination as! CommentViewController
+            let dvc = segue.destination as! ManageComViewController
             dvc.item = self.item
             //
             //            dvc.URLstr = newString
