@@ -101,10 +101,18 @@ class BuyItemViewController: UIViewController {
             
             
             
+        } else if segue.identifier == "toDMView"{
+            let dvc = segue.destination as! DMViewController
+            dvc.item = self.item
         }
+        
     }
     @IBAction func unwindToBuyItem(segue: UIStoryboardSegue){
         
     }
+    @IBAction func unwindToBuyItemFromDM(segue: UIStoryboardSegue){
+        
+    }
+
     
 }

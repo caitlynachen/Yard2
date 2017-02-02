@@ -215,18 +215,7 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             }
         }
 
-        let startindex = itemOb.createdAt.index(itemOb.createdAt.startIndex, offsetBy: 5)
-        let endindex = itemOb.createdAt.index(itemOb.createdAt.startIndex, offsetBy: 7)
-        let str = itemOb.createdAt[startindex...endindex]
-        
-        let monthstr =  monthString(x: str)
-        print(monthstr)
-        
-        let startindexd = itemOb.createdAt.index(itemOb.createdAt.startIndex, offsetBy: 8)
-        let endindexd = itemOb.createdAt.index(itemOb.createdAt.startIndex, offsetBy: 10)
-        let montdstr = itemOb.createdAt[startindexd...endindexd]
-        
-        cell.dateLabel.text = monthstr + montdstr
+
         cell.titleLabel.text = itemOb.title
         cell.priceLabel.text = "$" + String(itemOb.price)
         cell.conditionLabel.text = itemOb.condition

@@ -40,6 +40,8 @@
 	<string>always use</string>
 	<key>NSCameraUsageDescription</key>
 	<string>camera use</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<string>NO</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>lib use</string>
 </dict>
