@@ -1,13 +1,19 @@
-
+//
+//  DMProfileViewController.swift
+//  Yard2
+//
+//  Created by Caitlyn Chen on 2/1/17.
+//  Copyright © 2017 Caitlyn Chen. All rights reserved.
+//
 
 import UIKit
 import Firebase
-import JSQMessagesViewController
 
-class DMViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DMProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     
+    var userName: String?
 
-    var item : ItemObject?
+
     @IBOutlet weak var textField: UITextField!
     
     @IBOutlet weak var tableView: UITableView!
@@ -20,8 +26,7 @@ class DMViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.text = item?.addedByUser
-
+        titleLabel.text = userName
         self.tableView.rowHeight = 70
         
         
@@ -29,16 +34,15 @@ class DMViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         tableView.delegate = self
         tableView.dataSource = self
         
-        let username = item?.addedByUser
-
+        
         commentRef?.observe(.value, with: { snapshot in
             var newComs: [DMObject] = []
             
             for item in snapshot.children {
                 let itemOb = DMObject(snapshot: item as! FIRDataSnapshot)
-                if ((itemOb.createdBy == FIRAuth.auth()?.currentUser?.email && itemOb.sentTo == username) || (itemOb.sentTo ==  FIRAuth.auth()?.currentUser?.email && itemOb.createdBy == username)){
+                if ((itemOb.createdBy == FIRAuth.auth()?.currentUser?.email && itemOb.sentTo == self.userName) || (itemOb.sentTo ==  FIRAuth.auth()?.currentUser?.email && itemOb.createdBy == self.userName)){
                     newComs.append(itemOb)
-
+                    
                 }
             }
             
@@ -62,21 +66,21 @@ class DMViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     @IBAction func sendButtonTap(_ sender: Any) {
         let comref = commentRef?.child(textField.text!)
         
-        let comOb = DMObject(title: self.textField.text!, createdAt: String(describing: NSDate()), createdBy: (FIRAuth.auth()?.currentUser?.email)!, sentTo: (item?.addedByUser)!)
+        let comOb = DMObject(title: self.textField.text!, createdAt: String(describing: NSDate()), createdBy: (FIRAuth.auth()?.currentUser?.email)!, sentTo: (userName)!)
         
         
         comref?.setValue(comOb.toAnyObject())
         
         textField.text = ""
     }
-
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return comments.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DMCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DMCellProfile", for: indexPath)
         let itemOb = comments[indexPath.row]
         
         cell.textLabel?.text = itemOb.title
@@ -116,8 +120,18 @@ class DMViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
 
-    
-    
-   
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
 }

@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import SDWebImage
+import Firebase
 
 class BuyItemViewController: UIViewController {
     
@@ -23,9 +24,13 @@ class BuyItemViewController: UIViewController {
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var price: UILabel!
     
+    @IBOutlet weak var messagesellerbutton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        if FIRAuth.auth()?.currentUser?.email == item?.addedByUser{
+            messagesellerbutton.isEnabled = false
+        }
         
         navBar.topItem!.title = ""
         navBar.topItem!.title = item?.title
@@ -107,6 +112,9 @@ class BuyItemViewController: UIViewController {
         }
         
     }
+    
+  
+    
     @IBAction func unwindToBuyItem(segue: UIStoryboardSegue){
         
     }

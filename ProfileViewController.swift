@@ -90,6 +90,9 @@ class ProfileViewController: UIViewController {
     @IBAction func unwindToProfile(segue: UIStoryboardSegue){
         
     }
+    @IBAction func unwindToProfileFromDMs(segue: UIStoryboardSegue){
+        
+    }
     
     /*
      // MARK: - Navigation
