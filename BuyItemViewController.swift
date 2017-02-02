@@ -14,6 +14,7 @@ class BuyItemViewController: UIViewController {
     
     var item: ItemObject?
     
+    @IBOutlet weak var userlabel: UILabel!
     @IBOutlet weak var navBar: UINavigationBar!
     
     @IBOutlet weak var address: UIButton!
@@ -31,6 +32,7 @@ class BuyItemViewController: UIViewController {
         address.setTitle(item?.addressStr, for: .normal)
         caption.text = item?.caption
         condition.text = item?.condition
+        userlabel.text = item?.addedByUser
         
         let prices = item?.price
         let priceString = String(format: "%.01f", prices!)

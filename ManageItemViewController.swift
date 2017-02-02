@@ -14,6 +14,7 @@ import Firebase
 
 class ManageItemViewController: UIViewController {
     
+    @IBOutlet weak var userlabel: UILabel!
     @IBOutlet weak var navBAr: UINavigationBar!
     @IBOutlet weak var comment: UIButton!
     @IBOutlet weak var caption: UILabel!
@@ -31,6 +32,7 @@ class ManageItemViewController: UIViewController {
         addressLabel.setTitle(item?.addressStr, for: .normal)
         caption.text = item?.caption
         conditionLabel.text = item?.condition
+        userlabel.text = item?.addedByUser
         
         let prices = item?.price
         let priceString = String(format: "%.01f", prices!)

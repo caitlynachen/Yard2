@@ -116,7 +116,8 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
             return items.count
             
         }
-        return results.count    }
+        return results.count
+    }
     
     var itemRow: Int?
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -138,7 +139,7 @@ class ManageSalesViewController: UIViewController,UITableViewDelegate, UITableVi
         itemRow = indexPath.row
         
         cell.titleLabel.text = itemOb.title
-        cell.priceLabel.text = String(itemOb.price)
+        cell.priceLabel.text = "$" + String(itemOb.price)
         cell.conditionLabel.text = itemOb.condition
         cell.addressLabel.text = itemOb.addressStr
         let rounded = round(itemOb.calculateDistance(fromLocation: currentLoc)/1609.344*100)/100

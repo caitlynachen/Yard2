@@ -14,9 +14,12 @@ import MapKit
 
 class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, UISearchBarDelegate{
     
+
     @IBOutlet weak var searchBar: UISearchBar!
     var storageRef: FIRStorageReference?
     
+
+  
     @IBOutlet weak var searchNavBar: UINavigationBar!
     var items: [ItemObject] = []
 
@@ -25,8 +28,8 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     let locationManager = CLLocationManager()
     var estcurrentLoc : CLLocation = CLLocation(latitude: 0, longitude: 0)
     
-    var queryswitch = 0
-    var previousquery = 0
+    var queryswitch = 1
+    var previousquery = 1
     
     var results : [ItemObject] = []
 
@@ -212,8 +215,20 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             }
         }
 
+        let startindex = itemOb.createdAt.index(itemOb.createdAt.startIndex, offsetBy: 5)
+        let endindex = itemOb.createdAt.index(itemOb.createdAt.startIndex, offsetBy: 7)
+        let str = itemOb.createdAt[startindex...endindex]
+        
+        let monthstr =  monthString(x: str)
+        print(monthstr)
+        
+        let startindexd = itemOb.createdAt.index(itemOb.createdAt.startIndex, offsetBy: 8)
+        let endindexd = itemOb.createdAt.index(itemOb.createdAt.startIndex, offsetBy: 10)
+        let montdstr = itemOb.createdAt[startindexd...endindexd]
+        
+        cell.dateLabel.text = monthstr + montdstr
         cell.titleLabel.text = itemOb.title
-        cell.priceLabel.text = String(itemOb.price)
+        cell.priceLabel.text = "$" + String(itemOb.price)
         cell.conditionLabel.text = itemOb.condition
         cell.addressLabel.text = itemOb.addressStr
         let rounded = round(itemOb.calculateDistance(fromLocation: estcurrentLoc)/1609.344*100)/100
@@ -222,6 +237,44 @@ class BuyViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         return cell
     }
 
+    func monthString(x: String) -> String{
+        if x == "01"{
+            return "Jan"
+        } else if x == "02"{
+            return "Feb"
+        }else if x == "03"{
+            return "Mar"
+        }
+        else if x == "04"{
+            return "Apr"
+        }
+        else if x == "05"{
+            return "May"
+        }
+        else if x == "06"{
+            return "June"
+        }
+        else if x == "07"{
+            return "July"
+        }else if x == "08"{
+            return "Aug"
+        }
+        else if x == "09"{
+            return "Sep"
+        }
+        else if x == "10"{
+            return "Oct"
+        }else if x == "11"{
+            return "Nov"
+        }
+        else if x == "12"{
+            return "Dec"
+        }
+        
+        
+     return ""
+        
+    }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText.isEmpty == false {

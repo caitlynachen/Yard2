@@ -10,6 +10,7 @@ import UIKit
 
 class CustomTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var imgView: UIImageView!
     
     @IBOutlet weak var distance: UILabel!
