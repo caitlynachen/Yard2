@@ -19,6 +19,7 @@ class DMViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         titleLabel.text = item?.addedByUser
 

@@ -12,6 +12,8 @@ import FirebaseAuth
 
 class LoginViewController: UIViewController {
 
+    var userRef: FIRDatabaseReference!
+
 
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
@@ -21,6 +23,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+         userRef = FIRDatabase.database().reference(withPath: "users")
 
         let tap : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         
@@ -69,13 +72,17 @@ class LoginViewController: UIViewController {
                     
                     if error == nil
                     {
-                        self.emailTextField.text = ""
-                        self.passwordTextField.text = ""
+                        //upload to firebas
+                        let comref = self.userRef.childByAutoId()
+                        
+                        
+                        comref.setValue(self.emailTextField.text!)
                         
                         shouldPerformSegue = true
                         
                         let top = UIApplication.shared.keyWindow!.rootViewController!
                         top.performSegue(withIdentifier: "createUserToTab", sender: top)
+                        
                         
                     }
                     else
@@ -141,14 +148,12 @@ class LoginViewController: UIViewController {
         
     }
 
-    /*
+    
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+ 
+ 
 
 }
